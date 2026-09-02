@@ -1,0 +1,220 @@
+/* =========================================================
+   1. RESET
+   ========================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button, input {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* =========================================================
+   2. DESIGN TOKENS (CSS custom properties)
+   Everything below is used everywhere else in the file —
+   change a value here and it updates the whole dashboard.
+   ========================================================= */
+:root {
+
+  /* ---- Fonts ---- */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* ---- Colors: base ---- */
+  --color-page-bg:      #FBEFC7;
+  --color-sidebar-start: #23264F;
+  --color-sidebar-end:   #171933;
+  --color-card-bg:      #FFFFFF;
+
+  --color-text-dark:    #1E2148;
+  --color-text-muted:   #9A9CB8;
+  --color-text-on-dark: #FFFFFF;
+  --color-nav-inactive: #8B8FB8;
+
+  /* ---- Colors: banner (yellow) ---- */
+  --color-banner-start: #FBD65B;
+  --color-banner-end:   #F5B93E;
+
+  /* ---- Colors: accents / badges ---- */
+  --color-pink-start:   #F9B8D0;
+  --color-pink-end:     #F191B8;
+
+  --color-teal-start:   #5EE6D9;
+  --color-teal-end:     #33B8AC;
+
+  --color-blue-start:   #96C4FF;
+  --color-blue-end:     #5E9BEF;
+
+  --color-red-start:    #FF9DAF;
+  --color-red-end:      #EF6B85;
+
+  --color-divider:      #F0F0F5;
+  --color-input-bg:     #F3F4F8;
+
+  /* ---- Radii ---- */
+  --radius-shell:  24px;
+  --radius-card:   16px;
+  --radius-thumb:  10px;
+  --radius-pill:   999px;
+
+  /* ---- Shadows ---- */
+  --shadow-shell: 0 20px 50px rgba(0, 0, 0, 0.15);
+  --shadow-card:  0 8px 24px rgba(20, 20, 60, 0.06);
+
+  /* ---- Spacing rhythm ---- */
+  --gap-section: 24px;
+  --gap-inner:   16px;
+}
+
+
+/* =========================================================
+   3. BASE PAGE
+   ========================================================= */
+body {
+  font-family: var(--font-body);
+  background: var(--color-page-bg);
+  color: var(--color-text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.dashboard-shell {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 640px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-shell);
+  box-shadow: var(--shadow-shell);
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-text-dark);
+}
+
+
+/* =========================================================
+   4. SIDEBAR
+   ========================================================= */
+.sidebar {
+  background: linear-gradient(160deg, var(--color-sidebar-start), var(--color-sidebar-end));
+  color: var(--color-text-on-dark);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 20px;
+}
+
+/* --- Logo --- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-thumb);
+  background: linear-gradient(135deg, var(--color-banner-start), var(--color-banner-end));
+  color: var(--color-text-dark);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* --- Nav --- */
+.nav-menu {
+  flex: 1;
+}
+
+.nav-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-thumb);
+  color: var(--color-nav-inactive);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.nav-item a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-on-dark);
+}
+
+.nav-item.active a {
+  background: linear-gradient(135deg, var(--color-pink-start), var(--color-pink-end));
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+/* --- Version label --- */
+.version {
+  font-size: 0.7rem;
+  color: var(--color-nav-inactive);
+  opacity: 0.5;
+  padding: 12px 16px 0;
+}
+
+
+/* =========================================================
+   5. MAIN CONTENT (placeholder — filled in next steps)
+   ========================================================= */
+.main {
+  min-width: 80%;
+}
+

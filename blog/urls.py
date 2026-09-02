@@ -2,4 +2,70 @@ from . import views
 from django.urls import path
 
 urlpatterns = [
+    path(
+    'dashboard/',
+    views.dashboard,
+    name='dashboard'
+),
+path(
+    'feed/',
+    views.blog_feed,
+    name='blog_feed'
+),
+path(
+    'create/',
+    views.create_post,
+    name='create_post'
+),
+path(
+    'my-posts/',
+    views.my_posts,
+    name='my_posts'
+),
+path(
+    'edit/<int:post_id>/',
+    views.edit_post,
+    name='edit_post'
+),
+path(
+    'delete/<int:post_id>/',
+    views.delete_post,
+    name='delete_post'
+),
+path(
+    'like/<int:post_id>/',
+    views.toggle_like,
+    name='toggle_like'
+),
+path(
+    'comment/<int:post_id>/',
+    views.add_comment,
+    name='add_comment'
+),
+path(
+    'comment/delete/<int:comment_id>/',
+    views.delete_comment,
+    name='delete_comment'
+),
+path(
+    'post/<slug:slug>/',
+    views.post_detail,
+    name='post_detail'
+),
+path(
+    'profile/',
+    views.profile,
+    name='profile'
+),
+path(
+    'profile/edit/',
+    views.edit_profile,
+    name='edit_profile'
+),
+path(
+    'profile/change-password/',
+    views.change_password,
+    name='change_password'
+),
+path('my-drafts/', views.my_drafts, name='my_drafts'),
 ]

@@ -7,18 +7,34 @@ from django.contrib.auth.decorators import login_required
 
 def login_page(request):
 
-    if request.method == "POST":    
+    if request.method == 'POST':
 
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        authenticated_user = authenticate(request, username=username, password=password)
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
 
-        if authenticated_user :
-            login(request, authenticated_user)
-            messages.success(request, 'Login successful!')
+        if user is not None:
+
+            login(request, user)
+
+            if user.is_staff:
+                return redirect('admin_dashboard')
+
             return redirect('home')
-    return render(request, 'login.html')
+
+        else:
+
+            messages.error(
+                request,
+                'Invalid username or password.'
+            )
+
+    return render(request, 'user/login.html')
 
 def register_page(request):
 
@@ -31,32 +47,32 @@ def register_page(request):
 
         if password != confirm_password:
             messages.error(request, 'Passwords do not match!')
-            return render(request, 'register.html')
+            return render(request, 'user/register.html')
 
         if len(password) < 8:
             messages.error(request, 'Password must be at least 8 characters long!')
-            return render(request, 'register.html')
+            return render(request, 'user/register.html')
 
         if email and not email.endswith('@gmail.com'):
             messages.error(request, 'Email must be a valid Gmail address!')
-            return render(request, 'register.html')
+            return render(request, 'user/register.html')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'A user with this email already exists!')
-            return render(request, 'register.html')
+            return render(request, 'user/register.html')
 
         user = User.objects.create_user(username=username, email=email, password=password)
 
         messages.success(request, 'Registration successful!') 
-        return render(request, 'login.html')  
-    return render(request, 'register.html')
+        return render(request, 'user/login.html')  
+    return render(request, 'user/register.html')
 
 def forgot_password(request):
-    return render(request, 'forgot_password.html')
+    return render(request, 'user/forgot_password.html')
 
 @login_required
 def home_page(request):
-    return render(request, 'home.html')
+    return render(request, 'user/home.html')
 
 @login_required
 def logout_view(request):
@@ -69,4 +85,8 @@ def logout_view(request):
 
         return redirect('login')
     return redirect('home')
+
+
+
+
 

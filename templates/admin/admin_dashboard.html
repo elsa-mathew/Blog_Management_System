@@ -1,0 +1,259 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Admin Dashboard | Blogify{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Welcome back, {{ request.user.username }}.</p>
+        </div>
+    </div>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="admin-stats-grid">
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon users-icon">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+                <span>Total Users</span>
+                <strong>{{ total_users }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon posts-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+
+            <div>
+                <span>Total Posts</span>
+                <strong>{{ total_posts }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon published-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+                <span>Published</span>
+                <strong>{{ published_posts }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon draft-icon">
+                <i class="bi bi-file-earmark"></i>
+            </div>
+
+            <div>
+                <span>Drafts</span>
+                <strong>{{ draft_posts }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon comments-icon">
+                <i class="bi bi-chat-left-text"></i>
+            </div>
+
+            <div>
+                <span>Total Comments</span>
+                <strong>{{ total_comments }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon likes-icon">
+                <i class="bi bi-heart"></i>
+            </div>
+
+            <div>
+                <span>Total Likes</span>
+                <strong>{{ total_likes }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECENT POSTS ================= -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+                <h2>Recent Posts</h2>
+                <p>Latest posts created by users.</p>
+            </div>
+
+            <a href="{% url 'admin_posts' %}" class="admin-view-all">
+    View All
+    <i class="bi bi-arrow-right"></i>
+</a>
+
+        </div>
+
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for post in recent_posts %}
+
+    <tr
+        onclick="window.location.href='{% url 'admin_post_detail' post.id %}'"
+        style="cursor: pointer;"
+    >
+
+        <td>
+            <strong>{{ post.title }}</strong>
+        </td>
+
+        <td>
+            {{ post.author.username }}
+        </td>
+
+        <td>
+
+            {% if post.status == 'published' %}
+
+                <span class="status-badge published">
+                    Published
+                </span>
+
+            {% else %}
+
+                <span class="status-badge draft">
+                    Draft
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+            {{ post.created_at|date:"M d, Y" }}
+        </td>
+
+    </tr>
+
+{% empty %}
+
+    <tr>
+
+        <td colspan="4" class="empty-table">
+            No posts available.
+        </td>
+
+    </tr>
+
+{% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECENT USERS ================= -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+                <h2>Recent Users</h2>
+                <p>Recently registered users.</p>
+            </div>
+
+        </div>
+
+
+        <div class="admin-users-list">
+
+            {% for user in recent_users %}
+
+                <div class="admin-user-row">
+
+                    <div class="admin-user-avatar">
+                        {{ user.username|first|upper }}
+                    </div>
+
+                    <div class="admin-user-info">
+
+                        <strong>
+                            {{ user.username }}
+                        </strong>
+
+                        <span>
+                            {{ user.email|default:"No email" }}
+                        </span>
+
+                    </div>
+
+                    <span class="admin-user-date">
+                        {{ user.date_joined|date:"M d, Y" }}
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <p class="empty-admin">
+                    No users available.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

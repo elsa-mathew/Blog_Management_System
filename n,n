@@ -1,0 +1,24 @@
+from blog.models import Category, Post
+from django.shortcuts import render, redirect
+
+def create_post(request):
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        category_id = request.POST.get('category')
+        tags = request.POST.getlist('tags')
+        status = request.POST.get('status')
+
+        category = Category.objects.get(id=category_id)
+        post = Post.objects.create(
+            user=request.user,
+            author=request.user.username,
+            title=title,
+            content=content,
+            category=category,
+            status=status
+        )
+
+        post.tags.set(tags)
+        return redirect('home')

@@ -1,0 +1,97 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Edit Post | Admin | Blogify{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+
+        <a
+            href="{% url 'admin_post_detail' post.id %}"
+            class="admin-back-link"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Post
+        </a>
+
+        <h1>Edit Post</h1>
+
+        <p>
+            Update "{{ post.title }}"
+        </p>
+
+    </div>
+
+
+    <div class="admin-section-card admin-edit-post-card">
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="admin-form-error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="admin-form-group">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% for error in field.errors %}
+
+                        <small class="admin-field-error">
+                            {{ error }}
+                        </small>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="admin-edit-actions">
+
+                <a
+                    href="{% url 'admin_post_detail' post.id %}"
+                    class="cancel-profile-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-profile-btn"
+                >
+                    <i class="bi bi-check-lg"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

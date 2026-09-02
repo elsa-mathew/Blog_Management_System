@@ -1,0 +1,320 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}{{ selected_user.username }} | Blogify{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+
+        <a
+            href="{% url 'admin_users' %}"
+            class="admin-back-link"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Users
+        </a>
+
+    </div>
+
+
+    <!-- User Profile -->
+
+    <div class="admin-section-card admin-user-profile-card">
+
+        <div class="admin-user-large-avatar">
+            {{ selected_user.username|first|upper }}
+        </div>
+
+        <div class="admin-user-profile-info">
+
+            <h1>{{ selected_user.username }}</h1>
+
+            <p>
+                {{ selected_user.email|default:"No email provided" }}
+            </p>
+
+            <span>
+                <i class="bi bi-calendar3"></i>
+                Joined {{ selected_user.date_joined|date:"M d, Y" }}
+            </span>
+
+        </div>
+
+        <div class="admin-user-actions">
+
+    {% if selected_user.is_active %}
+
+        <span class="status-badge active">
+            Active
+        </span>
+
+    {% else %}
+
+        <span class="status-badge inactive">
+            Inactive
+        </span>
+
+    {% endif %}
+
+
+    {% if selected_user != request.user %}
+
+        <form
+            method="POST"
+            action="{% url 'toggle_user_status' selected_user.id %}"
+        >
+
+            {% csrf_token %}
+
+            {% if selected_user.is_active %}
+
+                <button
+                    type="submit"
+                    class="admin-deactivate-btn"
+                >
+                    <i class="bi bi-person-dash"></i>
+                    Deactivate
+                </button>
+
+            {% else %}
+
+                <button
+                    type="submit"
+                    class="admin-activate-btn"
+                >
+                    <i class="bi bi-person-check"></i>
+                    Activate
+                </button>
+
+            {% endif %}
+
+        </form>
+
+
+        <form
+            method="POST"
+            action="{% url 'delete_user' selected_user.id %}"
+            onsubmit="return confirm('Are you sure you want to delete this user? This will also delete their posts and related data.');"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="admin-delete-btn"
+            >
+                <i class="bi bi-trash"></i>
+                Delete
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="admin-stats-grid">
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon posts-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+
+            <div>
+                <span>Total Posts</span>
+                <strong>{{ total_posts }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon likes-icon">
+                <i class="bi bi-heart"></i>
+            </div>
+
+            <div>
+                <span>Likes Received</span>
+                <strong>{{ total_likes }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon comments-icon">
+                <i class="bi bi-chat-left-text"></i>
+            </div>
+
+            <div>
+                <span>Comments Received</span>
+                <strong>{{ total_comments }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- User Posts -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+                <h2>User Posts</h2>
+                <p>Posts created by {{ selected_user.username }}.</p>
+            </div>
+
+        </div>
+
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for post in user_posts %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ post.title }}
+                                </strong>
+                            </td>
+
+                            <td>
+
+                                {% if post.status == 'published' %}
+
+                                    <span class="status-badge published">
+                                        Published
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge draft">
+                                        Draft
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ post.created_at|date:"M d, Y" }}
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="3"
+                                class="empty-table"
+                            >
+                                This user has not created any posts yet.
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Account Information -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+                <h2>Account Information</h2>
+                <p>Basic information about this user.</p>
+            </div>
+        </div>
+
+        <div class="profile-details">
+
+            <div class="profile-detail-item">
+
+                <span>Username</span>
+
+                <strong>
+                    {{ selected_user.username }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-item">
+
+                <span>Email</span>
+
+                <strong>
+                    {{ selected_user.email|default:"Not provided" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-item">
+
+                <span>First Name</span>
+
+                <strong>
+                    {{ selected_user.first_name|default:"Not provided" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-detail-item">
+
+                <span>Last Name</span>
+
+                <strong>
+                    {{ selected_user.last_name|default:"Not provided" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

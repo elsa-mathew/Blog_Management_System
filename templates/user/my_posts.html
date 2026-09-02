@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}My Posts | Blogify{% endblock %}
+
+{% block my_posts_active %}active{% endblock %}
+
+{% block content %}
+<div class="my-posts-page">
+
+    <!-- Header -->
+
+    <div class="my-posts-header">
+
+        <div>
+            <h1>My Posts</h1>
+
+            <p>
+                Manage your articles and drafts.
+            </p>
+        </div>
+
+        <a href="{% url 'create_post' %}" class="create-btn">
+
+            <i class="bi bi-plus-lg"></i>
+
+            Create Post
+
+        </a>
+
+    </div>
+
+
+    <!-- Posts -->
+
+    <div class="my-posts-card">
+
+        <div class="my-posts-card-header">
+
+            <h2>Your Articles</h2>
+
+            <span>
+                {{ posts|length }} posts
+            </span>
+
+        </div>
+
+{% for post in posts %}
+
+    <a href="{% url 'post_detail' post.slug %}" class="my-post-row-link">
+
+        <div class="my-post-row">
+
+            <!-- Image -->
+
+            <div class="my-post-image">
+
+                {% if post.featured_image %}
+
+                    <img
+                        src="{{ post.featured_image.url }}"
+                        alt="{{ post.title }}"
+                    >
+
+                {% else %}
+
+                    <i class="bi bi-image"></i>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Information -->
+
+            <div class="my-post-info">
+
+                <h3>
+                    {{ post.title }}
+                </h3>
+
+                <p>
+                    {{ post.created_at|date:"M d, Y" }}
+                    ·
+                    {{ post.category.name|default:"Uncategorized" }}
+                </p>
+
+            </div>
+
+
+            <!-- Status -->
+
+            {% if post.status == 'published' %}
+
+                <span class="status published">
+                    Published
+                </span>
+
+            {% else %}
+
+                <span class="status draft">
+                    Draft
+                </span>
+
+            {% endif %}
+
+
+            <!-- Actions -->
+
+            <div class="my-post-actions">
+
+                <span
+                    class="my-post-action-btn"
+                    title="Edit"
+                    onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{% url 'edit_post' post.id %}'"
+                >
+                    <i class="bi bi-pencil"></i>
+                </span>
+
+
+                <span
+                    class="my-post-action-btn"
+                    title="Delete"
+                    onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{% url 'delete_post' post.id %}'"
+                >
+                    <i class="bi bi-trash"></i>
+                </span>
+
+            </div>
+
+        </div>
+
+    </a>
+
+{% empty %}
+
+    <div class="my-posts-empty">
+
+        <i class="bi bi-journal-text"></i>
+
+        <h3>No posts yet</h3>
+
+        <p>
+            You haven't created any articles yet.
+        </p>
+
+        <a
+            href="{% url 'create_post' %}"
+            class="create-btn"
+        >
+            <i class="bi bi-plus-lg"></i>
+            Create Your First Post
+        </a>
+
+    </div>
+
+{% endfor %}
+        
+
+    </div>
+
+</div>
+
+{% endblock %}

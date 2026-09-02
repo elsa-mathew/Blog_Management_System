@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile | Blogify{% endblock %}
+
+{% block profile_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="edit-profile-container">
+
+    <div class="edit-profile-card">
+
+        <div class="edit-profile-header">
+
+            <div class="profile-avatar">
+                {{ user.username|first|upper }}
+            </div>
+
+            <div>
+                <h1>Edit Profile</h1>
+                <p>Update your account information.</p>
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="profile-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="profile-error">
+
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- Username -->
+
+            <div class="profile-form-group">
+
+                <label for="{{ form.username.id_for_label }}">
+                    Username
+                </label>
+
+                {{ form.username }}
+
+                {% for error in form.username.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+            </div>
+
+
+            <!-- First Name -->
+
+            <div class="profile-form-group">
+
+                <label for="{{ form.first_name.id_for_label }}">
+                    First Name
+                </label>
+
+                {{ form.first_name }}
+
+                {% for error in form.first_name.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Last Name -->
+
+            <div class="profile-form-group">
+
+                <label for="{{ form.last_name.id_for_label }}">
+                    Last Name
+                </label>
+
+                {{ form.last_name }}
+
+                {% for error in form.last_name.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="profile-form-group">
+
+                <label for="{{ form.email.id_for_label }}">
+                    Email Address
+                </label>
+
+                {{ form.email }}
+
+                {% for error in form.email.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="edit-profile-actions">
+
+                <a href="{% url 'profile' %}" class="cancel-profile-btn">
+                    Cancel
+                </a>
+
+                <button type="submit" class="save-profile-btn">
+                    <i class="bi bi-check-lg"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

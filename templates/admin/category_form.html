@@ -1,0 +1,125 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}
+    {% if category %}
+        Edit Category
+    {% else %}
+        Add Category
+    {% endif %}
+    | Blogify
+{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+
+        <a
+            href="{% url 'admin_categories' %}"
+            class="admin-back-link"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Categories
+        </a>
+
+    </div>
+
+
+    <div class="admin-section-card admin-form-card">
+
+        <div class="admin-section-header">
+
+            <div>
+
+                <h2>
+                    {% if category %}
+                        Edit Category
+                    {% else %}
+                        Add Category
+                    {% endif %}
+                </h2>
+
+                <p>
+                    {% if category %}
+                        Update category information.
+                    {% else %}
+                        Create a new category for your posts.
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="admin-form-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="admin-form-group">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% for error in field.errors %}
+
+                        <small class="admin-field-error">
+                            {{ error }}
+                        </small>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="admin-edit-actions">
+
+                <a
+                    href="{% url 'admin_categories' %}"
+                    class="cancel-profile-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-profile-btn"
+                >
+
+                    <i class="bi bi-check-lg"></i>
+
+                    {% if category %}
+                        Save Changes
+                    {% else %}
+                        Create Category
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

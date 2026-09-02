@@ -1,0 +1,227 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Users | Blogify{% endblock %}
+
+{% block users_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+
+        <div>
+            <h1>Users</h1>
+            <p>Manage registered users on Blogify.</p>
+        </div>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="admin-section-card user-search-card">
+
+        <form method="GET" class="admin-search-form">
+
+            <div class="admin-search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search by username or email..."
+                >
+
+            </div>
+
+            <button type="submit" class="admin-search-btn">
+                Search
+            </button>
+
+            {% if search_query %}
+
+                <a
+                    href="{% url 'admin_users' %}"
+                    class="admin-clear-btn"
+                >
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <!-- Users -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+                <h2>All Users</h2>
+
+                <p>
+                    {{ users|length }} user{{ users|length|pluralize }}
+                    found
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>User</th>
+
+                        <th>Email</th>
+
+                        <th>Posts</th>
+
+                        <th>Joined</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                        <tr>
+
+                            <!-- User -->
+
+                            <td>
+
+                                <div class="admin-table-user">
+
+                                    <div class="admin-user-avatar">
+                                        {{ user.username|first|upper }}
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            {{ user.username }}
+                                        </strong>
+
+                                        {% if user.is_staff %}
+                                            <small>Admin</small>
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- Email -->
+
+                            <td>
+                                {{ user.email|default:"No email" }}
+                            </td>
+
+
+                            <!-- Posts -->
+
+                            <td>
+                                {{ user.posts.count }}
+                            </td>
+
+
+                            <!-- Joined -->
+
+                            <td>
+                                {{ user.date_joined|date:"M d, Y" }}
+                            </td>
+
+
+                            <!-- Status -->
+
+                            <td>
+
+                                {% if user.is_active %}
+
+                                    <span class="status-badge active">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge inactive">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Action -->
+
+                            <td>
+
+                                <a
+                                    href="{% url 'admin_user_detail' user.id %}"
+                                    class="admin-action-btn"
+                                    title="View user"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="6" class="empty-table">
+
+                                {% if search_query %}
+
+                                    No users found for
+                                    "{{ search_query }}".
+
+                                {% else %}
+
+                                    No users available.
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

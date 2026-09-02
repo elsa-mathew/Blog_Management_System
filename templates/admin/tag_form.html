@@ -1,0 +1,74 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h2>
+            {% if tag %}
+                Edit Tag
+            {% else %}
+                Add Tag
+            {% endif %}
+        </h2>
+
+        <p>
+            {% if tag %}
+                Update tag information
+            {% else %}
+                Create a new blog tag
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+
+<div class="content-card">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="mb-4">
+
+            <label class="form-label">
+                Tag Name
+            </label>
+
+            {{ form.name }}
+
+            {% if form.name.errors %}
+                <div class="text-danger mt-2">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
+
+        </div>
+
+
+        <div class="d-flex gap-2">
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-lg"></i>
+
+                {% if tag %}
+                    Update Tag
+                {% else %}
+                    Create Tag
+                {% endif %}
+            </button>
+
+            <a
+                href="{% url 'admin_tags' %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

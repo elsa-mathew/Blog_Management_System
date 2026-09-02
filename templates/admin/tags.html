@@ -1,0 +1,144 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+<div class="admin-page-header">
+
+    <div>
+        <h1>Tags</h1>
+        <p>Manage blog tags</p>
+    </div>
+
+    <a href="{% url 'admin_create_tag' %}" class="admin-primary-btn">
+        <i class="bi bi-plus-lg"></i>
+        Add Tag
+    </a>
+
+</div>
+
+
+<div class="admin-section-card">
+
+    <div class="category-search-card">
+
+        <form method="GET" class="admin-search-form">
+
+            <div class="admin-search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search tags..."
+                >
+
+            </div>
+
+            <button type="submit" class="admin-search-btn">
+                Search
+            </button>
+
+            {% if search_query %}
+                <a href="{% url 'admin_tags' %}" class="admin-clear-btn">
+                    Clear
+                </a>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="admin-section-card">
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>TAG</th>
+                    <th>SLUG</th>
+                    <th>POSTS</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for tag in tags %}
+
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+                        <strong>{{ tag.name }}</strong>
+                    </td>
+
+                    <td>
+                        <span class="category-slug">
+                            {{ tag.slug }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="category-post-count">
+                            {{ tag.posts.count }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'admin_edit_tag' tag.id %}"
+                            class="admin-action-btn"
+                        >
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <form
+                            method="POST"
+                            action="{% url 'admin_delete_tag' tag.id %}"
+                            class="admin-inline-form"
+                            onsubmit="return confirm('Delete this tag?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="admin-action-btn admin-action-delete"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5" class="empty-table">
+                        No tags found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+
+<div class="admin-page-header">
+
+    <h1>Comments</h1>
+
+    <p>
+        Manage comments posted by users
+    </p>
+
+</div>
+
+
+<!-- Search -->
+
+<div class="admin-section-card post-filter-card">
+
+    <form method="GET" class="admin-search-form">
+
+        <div class="admin-search-box">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="text"
+                name="q"
+                value="{{ search_query }}"
+                placeholder="Search comments, users or posts..."
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="admin-search-btn"
+        >
+            Search
+        </button>
+
+        {% if search_query %}
+
+        <a
+            href="{% url 'admin_comments' %}"
+            class="admin-clear-btn"
+        >
+            Clear
+        </a>
+
+        {% endif %}
+
+    </form>
+
+</div>
+
+
+<!-- Comments -->
+
+<div class="admin-section-card">
+
+    <div class="admin-section-header">
+
+        <div>
+            <h2>All Comments</h2>
+
+            <p>
+                Review and manage user comments
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>USER</th>
+                    <th>COMMENT</th>
+                    <th>POST</th>
+                    <th>DATE</th>
+                    <th>ACTION</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for comment in comments %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+
+                    <!-- User -->
+
+                    <td>
+
+                        <div class="admin-table-user">
+
+                            <div class="admin-user-avatar">
+
+                                {{ comment.user.username|first|upper }}
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ comment.user.username }}
+                                </strong>
+
+                                <small>
+                                    {{ comment.user.email }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- Comment -->
+
+                    <td>
+
+                        <div class="admin-comment-text">
+
+                            {{ comment.content }}
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- Post -->
+
+                    <td>
+
+                        <strong>
+                            {{ comment.post.title }}
+                        </strong>
+
+                    </td>
+
+
+                    <!-- Date -->
+
+                    <td>
+
+                        <span class="admin-user-date">
+
+                            {{ comment.created_at|date:"d M Y" }}
+
+                        </span>
+
+                    </td>
+
+
+                    <!-- Delete -->
+
+                    <td>
+
+                        <form
+                            method="POST"
+                            action="{% url 'admin_delete_comment' comment.id %}"
+                            class="admin-inline-form"
+                            onsubmit="return confirm('Delete this comment?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="admin-action-btn admin-action-delete"
+                                title="Delete comment"
+                            >
+
+                                <i class="bi bi-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty-table"
+                    >
+                        No comments found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

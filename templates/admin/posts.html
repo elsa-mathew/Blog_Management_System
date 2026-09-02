@@ -1,0 +1,288 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block title %}Posts | Blogify{% endblock %}
+
+{% block posts_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+
+        <div>
+            <h1>Posts</h1>
+            <p>Manage all posts created on Blogify.</p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= SEARCH & FILTER ================= -->
+
+    <div class="admin-section-card post-filter-card">
+
+        <form method="GET" class="admin-post-filter-form">
+
+            <!-- Search -->
+
+            <div class="admin-search-box post-search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search by title or author..."
+                >
+
+            </div>
+
+
+            <!-- Status -->
+
+            <select name="status" class="admin-filter-select">
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option
+                    value="published"
+                    {% if status_filter == 'published' %}
+                        selected
+                    {% endif %}
+                >
+                    Published
+                </option>
+
+                <option
+                    value="draft"
+                    {% if status_filter == 'draft' %}
+                        selected
+                    {% endif %}
+                >
+                    Draft
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="admin-search-btn"
+            >
+                <i class="bi bi-funnel"></i>
+                Filter
+            </button>
+
+
+            {% if search_query or status_filter %}
+
+                <a
+                    href="{% url 'admin_posts' %}"
+                    class="admin-clear-btn"
+                >
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= POSTS TABLE ================= -->
+
+    <div class="admin-section-card">
+
+        <div class="admin-section-header">
+
+            <div>
+
+                <h2>All Posts</h2>
+
+                <p>
+                    {{ posts|length }}
+                    post{{ posts|length|pluralize }}
+                    found
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Post</th>
+
+                        <th>Author</th>
+
+                        <th>Category</th>
+
+                        <th>Status</th>
+
+                        <th>Created</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for post in posts %}
+
+                        <tr>
+
+                            <!-- Post -->
+
+                            <td>
+
+                                <div class="admin-post-title">
+
+                                    {% if post.featured_image %}
+
+                                        <img
+                                            src="{{ post.featured_image.url }}"
+                                            alt="{{ post.title }}"
+                                        >
+
+                                    {% else %}
+
+                                        <div class="admin-post-placeholder">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+
+                                    {% endif %}
+
+                                    <div>
+
+                                        <strong>
+                                            {{ post.title }}
+                                        </strong>
+
+                                        <span>
+                                            {{ post.content|truncatewords:8 }}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- Author -->
+
+                            <td>
+                                {{ post.author.username }}
+                            </td>
+
+
+                            <!-- Category -->
+
+                            <td>
+
+                                {% if post.category %}
+                                    {{ post.category.name }}
+                                {% else %}
+                                    <span class="no-value">
+                                        No category
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Status -->
+
+                            <td>
+
+                                {% if post.status == 'published' %}
+
+                                    <span class="status-badge published">
+                                        Published
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge draft">
+                                        Draft
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Created -->
+
+                            <td>
+                                {{ post.created_at|date:"M d, Y" }}
+                            </td>
+
+
+                            <!-- Action -->
+
+                            <td>
+
+                                <a
+                                    href="{% url 'admin_post_detail' post.id %}"
+                                    class="admin-action-btn"
+                                    title="View post"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="empty-table"
+                            >
+
+                                {% if search_query or status_filter %}
+
+                                    No posts match your search/filter.
+
+                                {% else %}
+
+                                    No posts available.
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

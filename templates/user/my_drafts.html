@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}My Drafts | Blogify{% endblock %}
+
+{% block drafts_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <div>
+        <h1>My Drafts</h1>
+        <p>Articles you've saved but haven't published yet.</p>
+    </div>
+
+    <a href="{% url 'create_post' %}" class="create-btn">
+        <i class="bi bi-plus-lg"></i>
+        Create Post
+    </a>
+</div>
+
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+        <div>
+            <h2>Draft Articles</h2>
+            <p>Your unpublished blog posts</p>
+        </div>
+    </div>
+
+
+    {% for post in drafts %}
+
+    <div class="my-post-row">
+
+        <div class="my-post-image">
+
+            {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+            {% else %}
+                <i class="bi bi-image"></i>
+            {% endif %}
+
+        </div>
+
+
+        <div class="my-post-info">
+
+            <h3>{{ post.title }}</h3>
+
+            <p>
+                {{ post.created_at|date:"M d, Y" }}
+                ·
+                {{ post.category.name|default:"Uncategorized" }}
+            </p>
+
+        </div>
+
+
+        <span class="status draft">
+            Draft
+        </span>
+
+
+        <div class="my-post-actions">
+
+            <a href="{% url 'edit_post' post.id %}" title="Edit">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <a href="{% url 'delete_post' post.id %}" title="Delete">
+                <i class="bi bi-trash"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty-state">
+
+        <i class="bi bi-file-earmark-text"></i>
+
+        <h3>No drafts yet</h3>
+
+        <p>You don't have any unpublished articles.</p>
+
+        <a href="{% url 'create_post' %}" class="create-btn">
+            <i class="bi bi-plus-lg"></i>
+            Create Your First Post
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
