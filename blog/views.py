@@ -4,11 +4,7 @@ from .models import Post, Category, Tag, Comment, Like
 from .models import Post, Category, Like, Comment
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from .forms import PostForm
-from .models import Post
 from django.db.models import Q
 from .forms import PostForm, EditProfileForm
 from django.contrib.auth.forms import PasswordChangeForm
@@ -160,11 +156,7 @@ def blog_feed(request):
             'selected_category': category_slug,
         }
     )
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .models import Post, Like, Comment
-from .forms import PostForm
+
 
 @login_required
 def create_post(request):
@@ -180,16 +172,16 @@ def create_post(request):
 
             post = form.save(commit=False)
 
-            # Logged-in user becomes the author
+            
             post.author = request.user
             
-            # Decide whether draft or published
+           
             if 'publish' in request.POST:
                 post.status = 'published'
             else:
                 post.status = 'draft'
 
-            # Generate a unique slug
+            
             from django.utils.text import slugify
 
             base_slug = slugify(post.title)
@@ -205,7 +197,7 @@ def create_post(request):
 
             post.save()
 
-            # Save ManyToMany tags
+        
             form.save_m2m()
 
             if post.status == 'published':
@@ -362,11 +354,11 @@ def toggle_like(request, post_id):
     ).first()
 
     if like:
-        # Already liked → unlike
+        
         like.delete()
 
     else:
-        # Not liked → like
+       
         Like.objects.create(
             post=post,
             user=request.user
@@ -427,10 +419,7 @@ def delete_comment(request, comment_id):
 
     post = comment.post
 
-    # Permission:
-    # 1. Comment owner
-    # 2. Post author
-    # 3. Admin/staff
+    
 
     can_delete = (
         comment.user == request.user
@@ -548,7 +537,6 @@ def change_password(request):
 
             user = form.save()
 
-            # Keep the user logged in after changing password
             update_session_auth_hash(
                 request,
                 user

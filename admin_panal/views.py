@@ -9,7 +9,7 @@ from blog.models import Post, Comment, Like, Category
 from django.contrib.auth import authenticate, login
 from blog.models import Post, Comment, Like, Category, Tag
 from blog.forms import PostForm, CategoryForm, TagForm
-# ================= ADMIN ACCESS =================
+
 
 def admin_required(view_func):
     @wraps(view_func)
@@ -29,7 +29,6 @@ def admin_required(view_func):
 
     return wrapper
 
-# ================= ADMIN DASHBOARD =================
 
 @admin_required
 def admin_dashboard(request):
@@ -68,7 +67,6 @@ def admin_dashboard(request):
     )
 
 
-# ================= ADMIN USERS =================
 
 @admin_required
 def admin_users(request):
@@ -98,7 +96,7 @@ def admin_users(request):
         }
     )
 
-# ================= ADMIN USER DETAIL =================
+
 
 @admin_required
 def admin_user_detail(request, user_id):
@@ -134,7 +132,6 @@ def admin_user_detail(request, user_id):
         context
     )
 
-# ================= TOGGLE USER STATUS =================
 
 @admin_required
 def toggle_user_status(request, user_id):
@@ -184,8 +181,6 @@ def toggle_user_status(request, user_id):
     )
 
 
-# ================= DELETE USER =================
-
 @admin_required
 def delete_user(request, user_id):
 
@@ -224,8 +219,6 @@ def delete_user(request, user_id):
         user_id=user_id
     )
 
-# ================= ADMIN POSTS =================
-
 @admin_required
 def admin_posts(request):
 
@@ -249,8 +242,6 @@ def admin_posts(request):
     )
 
 
-    # Search
-
     if search_query:
 
         posts = posts.filter(
@@ -258,8 +249,6 @@ def admin_posts(request):
             | Q(author__username__icontains=search_query)
         )
 
-
-    # Status filter
 
     if status_filter in ['published', 'draft']:
 
@@ -277,9 +266,7 @@ def admin_posts(request):
             'status_filter': status_filter,
         }
     )
-
-# ================= ADMIN POST DETAIL =================
-
+ 
 @admin_required
 def admin_post_detail(request, post_id):
 
@@ -300,8 +287,6 @@ def admin_post_detail(request, post_id):
             'post': post
         }
     )
-
-# ================= ADMIN EDIT POST =================
 
 @admin_required
 def admin_edit_post(request, post_id):
@@ -348,8 +333,6 @@ def admin_edit_post(request, post_id):
         }
     )
 
-# ================= ADMIN DELETE POST =================
-
 @admin_required
 def admin_delete_post(request, post_id):
 
@@ -375,8 +358,6 @@ def admin_delete_post(request, post_id):
         'admin_post_detail',
         post_id=post_id
     )
-
-# ================= TOGGLE POST STATUS =================
 
 @admin_required
 def admin_toggle_post_status(request, post_id):
@@ -414,8 +395,6 @@ def admin_toggle_post_status(request, post_id):
         post_id=post_id
     )
 
-# ================= ADMIN CATEGORIES =================
-
 @admin_required
 def admin_categories(request):
 
@@ -442,8 +421,6 @@ def admin_categories(request):
             'search_query': search_query,
         }
     )
-# ================= CREATE CATEGORY =================
-
 @admin_required
 def admin_create_category(request):
 
@@ -475,8 +452,6 @@ def admin_create_category(request):
             'form': form,
         }
     )
-# ================= EDIT CATEGORY =================
-
 @admin_required
 def admin_edit_category(request, category_id):
 
@@ -517,8 +492,6 @@ def admin_edit_category(request, category_id):
             'category': category,
         }
     )
-
-# ================= DELETE CATEGORY =================
 
 @admin_required
 def admin_delete_category(request, category_id):
@@ -621,8 +594,6 @@ def admin_delete_tag(request, tag_id):
         )
 
     return redirect('admin_tags')
-
-# ================= COMMENTS =================
 
 @admin_required
 def admin_comments(request):
