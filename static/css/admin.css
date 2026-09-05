@@ -11,15 +11,11 @@ body {
 }
 
 
-/* ================= LAYOUT ================= */
-
 .admin-layout {
     min-height: 100vh;
     display: flex;
 }
 
-
-/* ================= SIDEBAR ================= */
 
 .admin-sidebar {
     width: 250px;
@@ -101,8 +97,6 @@ body {
 }
 
 
-/* ================= MAIN ================= */
-
 .admin-main {
     margin-left: 250px;
     width: calc(100% - 250px);
@@ -149,8 +143,6 @@ body {
 }
 
 
-/* ================= HEADER ================= */
-
 .admin-page-header {
     margin-bottom: 25px;
 }
@@ -165,9 +157,6 @@ body {
     font-size: 13px;
     margin-top: 5px;
 }
-
-
-/* ================= STATS ================= */
 
 .admin-stats-grid {
     display: grid;
@@ -243,8 +232,6 @@ body {
 }
 
 
-/* ================= SECTIONS ================= */
-
 .admin-section-card {
     background: #fff;
     border-radius: 16px;
@@ -278,7 +265,6 @@ body {
 }
 
 
-/* ================= TABLE ================= */
 
 .admin-table-wrapper {
     overflow-x: auto;
@@ -332,8 +318,6 @@ body {
     padding: 30px !important;
 }
 
-
-/* ================= USERS ================= */
 
 .admin-users-list {
     display: flex;
@@ -394,8 +378,6 @@ body {
     text-align: center;
     padding: 20px;
 }
-
-/* ================= USER MANAGEMENT ================= */
 
 .user-search-card {
     padding: 18px 25px;
@@ -512,8 +494,6 @@ body {
     color: #fff;
 }
 
-/* ================= ADMIN USER DETAIL ================= */
-
 .admin-back-link {
     display: inline-flex;
     align-items: center;
@@ -567,7 +547,6 @@ body {
     font-size: 11px;
 }
 
-/* ================= USER ACTIONS ================= */
 
 .admin-user-actions {
     display: flex;
@@ -621,8 +600,6 @@ body {
     background: #ffd1d1;
 }
 
-/* ================= ADMIN POSTS ================= */
-
 .post-filter-card {
     padding: 18px 25px;
 }
@@ -653,7 +630,6 @@ body {
 }
 
 
-/* Post title */
 
 .admin-post-title {
     display: flex;
@@ -704,8 +680,6 @@ body {
     font-size: 12px;
     font-style: italic;
 }
-
-/* ================= ADMIN POST DETAIL ================= */
 
 .admin-post-detail-card {
     background: #fff;
@@ -849,7 +823,6 @@ body {
 }
 
 
-/* ================= ADMIN EDIT POST ================= */
 
 .admin-edit-post-card {
     max-width: 850px;
@@ -913,8 +886,6 @@ body {
     gap: 10px;
     margin-top: 25px;
 }
-
-/* ================= ADMIN CATEGORIES ================= */
 
 .category-search-card {
     padding: 18px 25px;
@@ -980,8 +951,6 @@ body {
 }
 
 
-/* ================= ADMIN FORM ================= */
-
 .admin-form-card {
     max-width: 800px;
 }
@@ -990,8 +959,6 @@ body {
     resize: vertical;
     min-height: 130px;
 }
-
-/* ================= COMMENTS ================= */
 
 .admin-comment-text {
     max-width: 350px;

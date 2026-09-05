@@ -1,6 +1,4 @@
-/* ================================
-   LOGIN PAGE
-================================ */
+
 
 * {
     margin: 0;
@@ -16,9 +14,6 @@ body {
 }
 
 
-/* ================================
-   PAGE BACKGROUND
-================================ */
 
 .login-page {
     min-height: 100vh;
@@ -30,8 +25,6 @@ body {
     overflow: hidden;
 }
 
-
-/* Decorative background shapes */
 
 .login-page::before {
     content: "";
@@ -68,9 +61,6 @@ body {
 }
 
 
-/* ================================
-   MAIN CONTAINER
-================================ */
 
 .login-container {
     width: 88%;
@@ -94,9 +84,6 @@ body {
 }
 
 
-/* ================================
-   LEFT FORM SECTION
-================================ */
 
 .login-form-section {
     width: 43%;
@@ -108,10 +95,6 @@ body {
 }
 
 
-/* ================================
-   BRAND
-================================ */
-
 .brand {
     font-size: 13px;
     font-weight: 700;
@@ -122,9 +105,6 @@ body {
 }
 
 
-/* ================================
-   LOGIN CONTENT
-================================ */
 
 .login-content {
     width: 100%;
@@ -156,9 +136,6 @@ body {
 }
 
 
-/* ================================
-   MESSAGES
-================================ */
 
 .messages {
     margin-bottom: 18px;
@@ -176,10 +153,6 @@ body {
     padding: 8px 10px;
 }
 
-
-/* ================================
-   FORM
-================================ */
 
 .form-group {
     margin-bottom: 20px;
@@ -228,9 +201,6 @@ body {
 }
 
 
-/* ================================
-   PASSWORD
-================================ */
 
 .password-wrapper {
     position: relative;
@@ -256,10 +226,6 @@ body {
 }
 
 
-/* ================================
-   FORGOT PASSWORD
-================================ */
-
 .forgot-wrapper {
     text-align: right;
 
@@ -282,10 +248,6 @@ body {
     color: #1761a8;
 }
 
-
-/* ================================
-   LOGIN BUTTON
-================================ */
 
 .login-button {
     width: 100%;
@@ -322,10 +284,6 @@ body {
 }
 
 
-/* ================================
-   REGISTER
-================================ */
-
 .register-text {
     text-align: center;
 
@@ -351,10 +309,6 @@ body {
 }
 
 
-/* ================================
-   IMAGE SECTION
-================================ */
-
 .login-image-section {
     width: 57%;
 
@@ -371,8 +325,6 @@ body {
 }
 
 
-/* Illustration */
-
 .login-image-section img {
     width: 88%;
 
@@ -387,10 +339,6 @@ body {
     z-index: 2;
 }
 
-
-/* ================================
-   IMAGE DECORATIONS
-================================ */
 
 .illustration-circle {
     position: absolute;
@@ -418,10 +366,6 @@ body {
     top: 35px;
 }
 
-
-/* ================================
-   RESPONSIVE
-================================ */
 
 @media (max-width: 850px) {
 

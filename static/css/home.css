@@ -1,6 +1,4 @@
-/* =========================================================
-   1. RESET
-   ========================================================= */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -33,11 +31,6 @@ a {
 }
 
 
-/* =========================================================
-   2. DESIGN TOKENS (CSS custom properties)
-   Everything below is used everywhere else in the file —
-   change a value here and it updates the whole dashboard.
-   ========================================================= */
 :root {
 
   /* ---- Fonts ---- */
@@ -91,9 +84,6 @@ a {
 }
 
 
-/* =========================================================
-   3. BASE PAGE
-   ========================================================= */
 body {
   font-family: var(--font-body);
   background: var(--color-page-bg);
@@ -124,9 +114,6 @@ h1, h2, h3, h4 {
 }
 
 
-/* =========================================================
-   4. SIDEBAR
-   ========================================================= */
 .sidebar {
   background: linear-gradient(160deg, var(--color-sidebar-start), var(--color-sidebar-end));
   color: var(--color-text-on-dark);
@@ -135,7 +122,6 @@ h1, h2, h3, h4 {
   padding: 28px 20px;
 }
 
-/* --- Logo --- */
 .logo {
   display: flex;
   align-items: center;
@@ -162,7 +148,7 @@ h1, h2, h3, h4 {
   font-size: 1.05rem;
 }
 
-/* --- Nav --- */
+
 .nav-menu {
   flex: 1;
 }
@@ -202,7 +188,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
-/* --- Version label --- */
+
 .version {
   font-size: 0.7rem;
   color: var(--color-nav-inactive);
@@ -211,9 +197,6 @@ h1, h2, h3, h4 {
 }
 
 
-/* =========================================================
-   5. MAIN CONTENT (placeholder — filled in next steps)
-   ========================================================= */
 .main {
   min-width: 80%;
 }

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post, Category, Tag, Comment, Like
 from .models import Post, Category, Like, Comment
@@ -9,6 +9,8 @@ from django.db.models import Q
 from .forms import PostForm, EditProfileForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+
+
 def view_post(request, post_id):
     post = Post.objects.get(id=post_id)
     comments = post.comments.all()
@@ -163,10 +165,7 @@ def create_post(request):
 
     if request.method == 'POST':
 
-        form = PostForm(
-            request.POST,
-            request.FILES
-        )
+        form = PostForm(request.POST,request.FILES)
 
         if form.is_valid():
 
@@ -231,47 +230,24 @@ def create_post(request):
 @login_required
 def my_posts(request):
 
-    posts = Post.objects.filter(
-        author=request.user
-    )
+    posts = Post.objects.filter(author=request.user)
 
-    return render(
-        request,
-        'user/my_posts.html',
-        {'posts': posts}
-    )
+    return render(request, 'user/my_posts.html',{'posts': posts})
 
 @login_required
 def my_drafts(request):
-    drafts = Post.objects.filter(
-        author=request.user,
-        status='draft'
-    ).order_by('-created_at')
+    drafts = Post.objects.filter(author=request.user,status='draft').order_by('-created_at')
 
-    return render(
-        request,
-        'user/my_drafts.html',
-        {'drafts': drafts}
-    )
-
-from django.shortcuts import render, redirect, get_object_or_404
+    return render(request,'user/my_drafts.html',{'drafts': drafts})
 
 @login_required
 def edit_post(request, post_id):
 
-    post = get_object_or_404(
-        Post,
-        id=post_id,
-        author=request.user
-    )
+    post = get_object_or_404(Post,id=post_id,author=request.user)
 
     if request.method == 'POST':
 
-        form = PostForm(
-            request.POST,
-            request.FILES,
-            instance=post
-        )
+        form = PostForm(request.POST,request.FILES,instance=post)
 
         if form.is_valid():
 
@@ -283,23 +259,16 @@ def edit_post(request, post_id):
                 post.status = 'draft'
 
             post.save()
-
             form.save_m2m()
 
-            messages.success(
-                request,
-                'Post updated successfully!'
-            )
-
+            messages.success(request,'Post updated successfully!')
             return redirect('my_posts')
 
     else:
 
         form = PostForm(instance=post)
 
-    return render(
-        request,
-        'user/edit_post.html',
+    return render(request,'user/edit_post.html',
         {
             'form': form,
             'post': post
@@ -309,49 +278,28 @@ def edit_post(request, post_id):
 @login_required
 def delete_post(request, post_id):
 
-    post = get_object_or_404(
-        Post,
-        id=post_id,
-        author=request.user
-    )
+    post = get_object_or_404(Post,id=post_id,author=request.user)
 
     if request.method == 'POST':
 
         post.delete()
 
-        messages.success(
-            request,
-            'Post deleted successfully!'
-        )
+        messages.success(request,'Post deleted successfully!')
 
         return redirect('my_posts')
 
-    return render(
-        request,
-        'user/delete_post.html',
+    return render(request,'user/delete_post.html',
         {
             'post': post
         }
     )
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-
-from .models import Post, Like
-
 @login_required
 def toggle_like(request, post_id):
 
-    post = get_object_or_404(
-        Post,
-        id=post_id,
-        status='published'
-    )
+    post = get_object_or_404(Post,id=post_id,status='published')
 
-    like = Like.objects.filter(
-        post=post,
-        user=request.user
-    ).first()
+    like = Like.objects.filter(post=post, user=request.user).first()
 
     if like:
         
@@ -359,105 +307,53 @@ def toggle_like(request, post_id):
 
     else:
        
-        Like.objects.create(
-            post=post,
-            user=request.user
-        )
+        Like.objects.create(post=post, user=request.user)
 
-    return redirect(
-        request.META.get(
-            'HTTP_REFERER',
-            'blog_feed'
-        )
-    )
+    return redirect(request.META.get('HTTP_REFERER','blog_feed'))
 
 @login_required
 def add_comment(request, post_id):
 
-    post = get_object_or_404(
-        Post,
-        id=post_id,
-        status='published'
-    )
+    post = get_object_or_404(Post,id=post_id,status='published')
 
     if request.method == 'POST':
 
         content = request.POST.get('content', '').strip()
 
         if content:
-            Comment.objects.create(
-                post=post,
-                user=request.user,
-                content=content
-            )
-
-            messages.success(
-                request,
-                'Comment added successfully!'
-            )
+            Comment.objects.create(post=post, user=request.user, content=content)
+            messages.success(request,'Comment added successfully!')
 
         else:
-            messages.error(
-                request,
-                'Comment cannot be empty.'
-            )
+            messages.error(request,'Comment cannot be empty.')
 
-    return redirect(
-        request.META.get(
-            'HTTP_REFERER',
-            'blog_feed'
-        )
-    )
+    return redirect(request.META.get('HTTP_REFERER','blog_feed'))
 
 @login_required
 def delete_comment(request, comment_id):
 
-    comment = get_object_or_404(
-        Comment,
-        id=comment_id
-    )
-
+    comment = get_object_or_404(Comment,id=comment_id)
     post = comment.post
 
-    
-
-    can_delete = (
-        comment.user == request.user
-        or post.author == request.user
-        or request.user.is_staff
-    )
+    can_delete = (comment.user == request.user or post.author == request.user or request.user.is_staff)
 
     if not can_delete:
-        messages.error(
-            request,
-            'You do not have permission to delete this comment.'
-        )
-
+        messages.error(request,'You do not have permission to delete this comment.')
         return redirect('blog_feed')
 
     if request.method == 'POST':
 
         comment.delete()
-
-        messages.success(
-            request,
-            'Comment deleted successfully!'
-        )
+        messages.success(request,'Comment deleted successfully!')
 
     return redirect('blog_feed')
 
 @login_required
 def post_detail(request, slug):
 
-    post = get_object_or_404(
-        Post,
-        slug=slug,
-        status='published'
-    )
+    post = get_object_or_404(Post,slug=slug,status='published')
 
-    return render(
-        request,
-        'user/post_detail.html',
+    return render(request,'user/post_detail.html',
         {
             'post': post
         }
@@ -466,58 +362,34 @@ def post_detail(request, slug):
 @login_required
 def profile(request):
 
-    user_posts = Post.objects.filter(
-        author=request.user
-    )
+    user_posts = Post.objects.filter(author=request.user)
 
     context = {
         'total_posts': user_posts.count(),
-
-        'total_likes': Like.objects.filter(
-            post__author=request.user
-        ).count(),
-
-        'total_comments': Comment.objects.filter(
-            post__author=request.user
-        ).count(),
+        'total_likes': Like.objects.filter(post__author=request.user).count(),
+        'total_comments': Comment.objects.filter(post__author=request.user).count(),
     }
 
-    return render(
-        request,
-        'user/profile.html',
-        context
-    )
+    return render(request,'user/profile.html',context)
 
 @login_required
 def edit_profile(request):
 
     if request.method == 'POST':
 
-        form = EditProfileForm(
-            request.POST,
-            instance=request.user
-        )
+        form = EditProfileForm(request.POST,instance=request.user)
 
         if form.is_valid():
 
             form.save()
-
-            messages.success(
-                request,
-                'Profile updated successfully!'
-            )
-
+            messages.success(request,'Profile updated successfully!')
             return redirect('profile')
 
     else:
 
-        form = EditProfileForm(
-            instance=request.user
-        )
+        form = EditProfileForm(instance=request.user)
 
-    return render(
-        request,
-        'user/edit_profile.html',
+    return render(request,'user/edit_profile.html',
         {
             'form': form
         }
@@ -528,36 +400,20 @@ def change_password(request):
 
     if request.method == 'POST':
 
-        form = PasswordChangeForm(
-            request.user,
-            request.POST
-        )
+        form = PasswordChangeForm(request.user,request.POST)
 
         if form.is_valid():
 
             user = form.save()
-
-            update_session_auth_hash(
-                request,
-                user
-            )
-
-            messages.success(
-                request,
-                'Your password has been changed successfully!'
-            )
-
+            update_session_auth_hash(request,user)
+            messages.success(request,'Your password has been changed successfully!')
             return redirect('profile')
 
     else:
 
-        form = PasswordChangeForm(
-            request.user
-        )
+        form = PasswordChangeForm(request.user)
 
-    return render(
-        request,
-        'user/change_password.html',
+    return render(request,'user/change_password.html',
         {
             'form': form
         }
